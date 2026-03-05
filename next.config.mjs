@@ -10,6 +10,10 @@ const baseConfig = {
   output: "export",
   basePath: isProd ? `/${repoName}` : "",
   assetPrefix: isProd ? `/${repoName}/` : "",
+  images: {
+    // Needed for static export on GitHub Pages (no /_next/image endpoint)
+    unoptimized: true,
+  },
   // optional: remove deprecated experimental.appDir for Next 14
   // experimental: {
   //   appDir: true,
