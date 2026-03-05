@@ -31,6 +31,14 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      # GitHub Pages serves this project under /dinotrack,
+      # but Next's static export links the manifest as "/manifest.webmanifest".
+      # Rewrite the manifest href so browsers load it from the correct sub-path.
+      - name: Rewrite manifest link for GitHub Pages base path
+        run: |
+          find out -name "*.html" -exec \
+            sed -i 's|href="/manifest.webmanifest"|href="/dinotrack/manifest.webmanifest"|g' {} +
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
