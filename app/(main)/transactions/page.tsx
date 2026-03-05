@@ -66,7 +66,10 @@ export default function TransactionsPage() {
           <Image src={imagePath("/images/background.png")} alt="" fill className="object-cover" />
         </div>
 
-        <div className="relative z-10 w-full flex items-center justify-between gap-3 px-4 pt-[55px]">
+        <div
+          className="relative z-10 w-full flex items-center justify-between gap-3 px-4"
+          style={{ paddingTop: "calc(55px + env(safe-area-inset-top, 0px))" }}
+        >
           <h1 className="text-lg font-semibold leading-[1.5] text-white">Sổ giao dịch</h1>
           <button
             type="button"
