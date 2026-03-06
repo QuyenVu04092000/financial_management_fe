@@ -20,6 +20,8 @@ jobs:
       # Add these in GitHub: repo → Settings → Secrets and variables → Actions
       # Use "Variables" for non-secret values (e.g. API base URL)
       NEXT_PUBLIC_BASE_URL_API: ${{ vars.NEXT_PUBLIC_BASE_URL_API }}
+      HEALTH_URL: ${{ vars.HEALTH_URL }}
+
     steps:
       - uses: actions/checkout@v4
 
