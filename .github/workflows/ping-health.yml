@@ -1,0 +1,18 @@
+name: Ping health
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /health
+        env:
+          HEALTH_URL: ${{ secrets.HEALTH_URL }}
+        run: |
+          test -n "$HEALTH_URL"
+          curl -fsS --retry 3 --retry-all-errors --connect-timeout 5 --max-time 20 "$HEALTH_URL"
+
