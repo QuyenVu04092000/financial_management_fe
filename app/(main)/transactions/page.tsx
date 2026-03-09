@@ -52,24 +52,27 @@ export default function TransactionsPage() {
     setFooterVisible(true);
   }, [setFooterVisible]);
 
-  // monthPeriod and monthPeriodRange are provided by useTransactionsPage
-
-  // summary and dailyTransactions are provided by useTransactionsPage
-
-  // groupedTransactions, getSubCategoryIcon and formatCalendarAmount are provided by useTransactionsPage
+  // Derived loading state: use a full-page loader when the initial data is loading
+  const isInitialLoading = authLoading || (isLoadingList && groupedTransactions.length === 0 && !error);
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-white rounded-[32px] overflow-hidden">
+    <div className="relative flex min-h-screen flex-col bg-white overflow-hidden">
+      {isInitialLoading && (
+        <div className="pointer-events-auto fixed inset-0 z-40 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+          <div
+            className="h-10 w-10 animate-spin rounded-full border-4 border-[#0046B0] border-t-transparent"
+            aria-hidden="true"
+          />
+          <p className="mt-3 text-sm font-medium text-slate-700">Đang tải sổ giao dịch...</p>
+        </div>
+      )}
       {/* Header */}
-      <div className="relative bg-[#0046B0] h-[95px] rounded-bl-[20px] rounded-br-[20px]">
+      <div className="relative bg-[#0046B0] h-[55px]">
         <div className="absolute left-[-49px] top-0 h-[794.752px] w-[473px] mix-blend-lighten">
           <Image src={imagePath("/images/background.png")} alt="" fill className="object-cover" />
         </div>
 
-        <div
-          className="relative z-10 w-full flex items-center justify-between gap-3 px-4"
-          style={{ paddingTop: "calc(55px + env(safe-area-inset-top, 0px))" }}
-        >
+        <div className="relative z-10 w-full flex items-center justify-between gap-3 px-4 pt-[10px]">
           <h1 className="text-lg font-semibold leading-[1.5] text-white">Sổ giao dịch</h1>
           <button
             type="button"
@@ -91,7 +94,7 @@ export default function TransactionsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 px-4 pt-4 pb-24 space-y-4 flex-1 overflow-y-auto">
+      <div className="relative z-10 px-4 pt-4 pb-24 space-y-4 flex-1 overflow-y-auto mb-[150px]">
         {/* Month Selector */}
         <div className="flex items-center justify-between">
           <button

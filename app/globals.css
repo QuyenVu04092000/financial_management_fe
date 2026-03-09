@@ -11,12 +11,6 @@
   --mm-muted-foreground: 148 163 184; /* slate-400 */
   --mm-border: 30 64 175; /* indigo-700 */
 
-  /* Safe area OFF: force 0 so content is edge-to-edge (notch, home bar, address bar). */
-  --safe-area-inset-top: 0px;
-  --safe-area-inset-right: 0px;
-  --safe-area-inset-bottom: 0px;
-  --safe-area-inset-left: 0px;
-
   color-scheme: dark;
 }
 
@@ -33,7 +27,7 @@
   display: none; /* Chrome, Safari, Edge */
 }
 
-/* Force no safe area on mobile: full-bleed viewport. */
+/* Full-bleed viewport; no safe-area padding on body. Headers place content in safe area. */
 html {
   padding: 0 !important;
   margin: 0 !important;
@@ -49,7 +43,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   min-height: -webkit-fill-available;
-  /* Pull content up into top safe area (notch/Dynamic Island). */
+  /* Pull app up so header can extend into top safe area (notch/Dynamic Island); PWA and browser. */
   margin-top: calc(-1 * env(safe-area-inset-top, 0px)) !important;
   box-sizing: border-box;
 }

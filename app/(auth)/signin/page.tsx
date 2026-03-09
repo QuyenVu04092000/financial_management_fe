@@ -23,6 +23,21 @@ export default function HomePage() {
         }}
       />
 
+      {/* Loading overlay when signing in */}
+      {isLoading && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm"
+          aria-live="polite"
+          aria-busy="true"
+        >
+          <div
+            className="h-12 w-12 animate-spin rounded-full border-4 border-[#0046B0] border-t-transparent"
+            aria-hidden="true"
+          />
+          <p className="mt-4 text-sm font-medium text-slate-700">Đang đăng nhập...</p>
+        </div>
+      )}
+
       <div className="mt-10 w-full  px-4 pt-24 sm:px-6">
         {/* Mascot / illustration placeholder */}
 
@@ -37,7 +52,13 @@ export default function HomePage() {
             <p className="text-sm text-slate-500">Quản lý chi tiêu dễ dàng hơn bao giờ hết. Đăng nhập để bắt đầu!</p>
           </header>
 
-          <form action={handleSubmit} className="mt-8 space-y-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(new FormData(e.currentTarget));
+            }}
+            className="mt-8 space-y-4"
+          >
             <div className="space-y-3">
               <div>
                 <label htmlFor="login-phone" className="sr-only">
@@ -97,7 +118,7 @@ export default function HomePage() {
                   `}
                 aria-label="Đăng nhập (chưa khả dụng)"
               >
-                {isLoading ? "Logging in..." : "Đăng nhập"}
+                {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
               </button>
               <p className="flex items-center justify-center gap-1 text-sm text-slate-600">
                 <span>Bạn chưa có tài khoản?</span>

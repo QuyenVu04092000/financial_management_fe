@@ -14,8 +14,11 @@ export default function ListCategories({ setCategory }: ListCategoriesProps) {
   const router = useRouter();
   return (
     <section aria-label="Trang ngân sách" className="relative flex min-h-screen flex-col bg-white">
-      {/* Top Bar */}
-      <div className="relative h-[95px] w-full overflow-hidden rounded-b-[20px] bg-[#0046B0]">
+      {/* Top Bar - extends into top safe area on PWA and browser */}
+      <div
+        className="relative w-full overflow-hidden bg-[#0046B0] h-[55px]"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+      >
         {/* Pattern background */}
         <div className="absolute mix-blend-soft-light w-full h-full">
           <Image src={imagePath("/images/header.png")} alt="" fill className="object-cover" />

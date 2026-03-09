@@ -37,6 +37,8 @@ export default function ReportPage() {
   const formattedBalance = formatVietnameseCurrency(userBalance);
   const formattedTodaySpent = formatVietnameseCurrency(todaySpent);
 
+  const isInitialLoading = (isLoading || todaySpentLoading) && !error;
+
   return (
     <section
       aria-label="Trang báo cáo"
@@ -46,13 +48,25 @@ export default function ReportPage() {
           "linear-gradient(180.022deg, rgb(0, 70, 176) 16.185%, rgb(150, 211, 249) 81.491%, rgb(150, 211, 249) 81.491%)",
       }}
     >
+      {isInitialLoading && (
+        <div className="pointer-events-auto fixed inset-0 z-40 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+          <div
+            className="h-10 w-10 animate-spin rounded-full border-4 border-[#0046B0] border-t-transparent"
+            aria-hidden="true"
+          />
+          <p className="mt-3 text-sm font-medium text-slate-700">Đang tải báo cáo...</p>
+        </div>
+      )}
       {/* Pattern Background */}
       <div className="absolute left-[-49px] top-0 h-[794.752px] w-full mix-blend-lighten">
         <Image src={imagePath("/images/background.png")} alt="" fill className="object-cover" />
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 flex w-full flex-col items-center gap-3 px-4 pt-2 pb-24 overflow-visible">
+      {/* Main Content - top padding includes safe area so header area is below notch */}
+      <div
+        className="relative z-10 flex w-full flex-col items-center gap-3 px-4 pb-24 overflow-visible"
+        style={{ paddingTop: "calc(8px + env(safe-area-inset-top, 0px))" }}
+      >
         {/* Summary Cards */}
         <div className="w-full pt-3 grid grid-cols-2 gap-3 text-white">
           <div className="rounded-2xl bg-gradient-to-r from-[#BAE8FD] to-[#46C7FF] px-3 py-2 text-xs shadow relative">

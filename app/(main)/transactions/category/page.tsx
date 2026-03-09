@@ -45,14 +45,14 @@ function TransactionCategoryPageInner() {
   } = useTransactionCategoryPage();
 
   return (
-    <div className="relative flex min-h-screen max-h-screen flex-col bg-white rounded-[32px] overflow-y-auto">
+    <div className="relative flex h-screen flex-col bg-white overflow-y-auto">
       {/* Header */}
-      <div className="relative bg-[#0046B0] h-[60px] rounded-bl-[20px] rounded-br-[20px]">
-        <div className="absolute left-[-49px] top-0 h-[794.752px] w-full mix-blend-lighten">
+      <div className="relative bg-[#0046B0] h-[55px]" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
+        <div className="absolute left-[-49px] top-0 h-[100px] w-full mix-blend-lighten">
           <Image src={imagePath("/images/background.png")} alt="" fill className="object-cover" />
         </div>
 
-        <div className="relative z-10 w-full flex items-center justify-between gap-3 px-4 pt-4 overflow-visible">
+        <div className="relative z-10 w-full flex items-center justify-between gap-3 px-4 py-4 overflow-visible">
           <div className="flex items-center gap-3">
             <button
               type="button"

@@ -1,41 +1,52 @@
 // File: app/components/chat/AiChatWidget.tsx
 "use client";
 
-import React, { useCallback, useState } from "react";
-import { useChat } from "../../hooks/useChat";
-import { ChatFab } from "./ChatFab";
-import { ChatPanel } from "./ChatPanel";
+import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ChatFab, ChatFabPosition } from "./ChatFab";
 
 /**
- * Global AI chat widget: FAB + slide-up panel.
- * When the panel is closed, the current page is reloaded so that all
- * hooks refetch fresh data from the backend.
+ * Global AI chat widget: floating button that navigates to chat page.
  */
 export function AiChatWidget() {
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const { messages, isLoading, error, sendMessage, clearError, clearMessages } = useChat();
+  const router = useRouter();
 
-  const openPanel = useCallback(() => setIsPanelOpen(true), []);
-  const closePanel = useCallback(() => {
-    setIsPanelOpen(false);
-    if (typeof window !== "undefined") {
-      window.location.reload();
+  const [fabPosition, setFabPosition] = useState<ChatFabPosition>({ bottom: 96, right: 16 });
+
+  // Load saved position from localStorage (if any)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem("ai-chat-widget-position");
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as ChatFabPosition;
+      if (
+        typeof parsed === "object" &&
+        parsed !== null &&
+        typeof parsed.bottom === "number" &&
+        typeof parsed.right === "number"
+      ) {
+        setFabPosition(parsed);
+      }
+    } catch {
+      // ignore parse error
     }
   }, []);
 
+  const handleFabPositionChange = useCallback((pos: ChatFabPosition) => {
+    setFabPosition(pos);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("ai-chat-widget-position", JSON.stringify(pos));
+    }
+  }, []);
+
+  const goToChatPage = useCallback(() => {
+    router.push("/chat");
+  }, [router]);
+
   return (
     <>
-      <ChatFab onClick={openPanel} />
-      <ChatPanel
-        isOpen={isPanelOpen}
-        onClose={closePanel}
-        messages={messages}
-        isLoading={isLoading}
-        error={error}
-        onSendMessage={sendMessage}
-        onClearError={clearError}
-        onClearMessages={clearMessages}
-      />
+      <ChatFab onClick={goToChatPage} position={fabPosition} onPositionChange={handleFabPositionChange} />
     </>
   );
 }

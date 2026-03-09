@@ -39,7 +39,7 @@ export default function CreateCategoryPage() {
   return (
     <section aria-label="Tạo danh mục" className="relative flex min-h-screen flex-col bg-[#F8FAFC]">
       {/* Top Bar */}
-      <div className="relative h-[95px] w-full overflow-hidden rounded-b-[20px] bg-[#0046B0]">
+      <div className="relative h-[55px] w-full overflow-hidden bg-[#0046B0]">
         {/* Pattern background */}
         <div className="absolute left-[11.61px] top-[-394.84px] h-[509.668px] w-[347.389px] mix-blend-soft-light opacity-50">
           <Image src={imagePath("/images/background.png")} alt="" fill className="object-cover" />
@@ -54,7 +54,7 @@ export default function CreateCategoryPage() {
         </div>
 
         {/* Header */}
-        <div className="absolute left-1/2 top-[55px] flex w-full -translate-x-1/2 items-center gap-[7px] px-4">
+        <div className="absolute left-1/2 top-[10px] flex w-full -translate-x-1/2 items-center gap-[7px] px-4">
           {/* Back Button */}
           <button
             type="button"

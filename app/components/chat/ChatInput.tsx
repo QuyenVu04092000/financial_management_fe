@@ -44,6 +44,10 @@ export function ChatInput({ onSend, disabled = false, placeholder = "Nhập tin 
         placeholder={placeholder}
         disabled={disabled}
         rows={1}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck={false}
         className="min-h-[44px] max-h-32 flex-1 resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-[#0046B0] focus:outline-none focus:ring-1 focus:ring-[#0046B0] disabled:opacity-60"
         aria-label="Tin nhắn"
         aria-invalid={isOverMax}

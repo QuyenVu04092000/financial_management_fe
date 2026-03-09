@@ -14,9 +14,12 @@ export default function ListBudgets() {
 
   return (
     <section aria-label="Ngân sách" className="relative flex min-h-screen flex-col bg-white">
-      {/* Header */}
-      <div className="relative h-[95px] w-full overflow-hidden rounded-b-[20px] bg-[#0046B0]">
-        <div className="absolute h-full w-full mix-blend-soft-light">
+      {/* Header - extends into top safe area (notch) on PWA and browser */}
+      <div
+        className="relative w-full overflow-hidden bg-[#0046B0] h-[55px]"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+      >
+        <div className="absolute h-full w-full mix-blend-soft-light inset-0">
           <Image src={imagePath("/images/header.png")} alt="" fill className="object-cover" />
         </div>
         <div className="absolute left-1/2 bottom-2 flex w-full -translate-x-1/2 items-center justify-between gap-2 px-4">

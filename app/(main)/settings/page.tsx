@@ -30,16 +30,16 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-white rounded-[32px] overflow-hidden">
-      {/* Header */}
-      <div className="relative bg-[#0046B0] h-[95px] rounded-bl-[20px] rounded-br-[20px]">
+    <div className="relative flex min-h-screen flex-col bg-white overflow-hidden">
+      {/* Header - extends into top safe area on PWA and browser */}
+      <div className="relative bg-[#0046B0] h-[55px] " style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
         <div className="absolute left-[-49px] top-0 h-[794.752px] w-full mix-blend-lighten">
           <div
             className="h-full w-full bg-cover bg-center"
             style={{ backgroundImage: `url('${imagePath("/images/background.png")}')` }}
           />
         </div>
-        <div className="relative z-10 w-full flex items-center justify-between gap-3 px-4 pt-[55px]">
+        <div className="relative z-10 w-full flex items-center justify-between gap-3 px-4 pt-[10px]">
           <h1 className="text-lg font-semibold leading-[1.5] text-white">Cài đặt</h1>
         </div>
       </div>

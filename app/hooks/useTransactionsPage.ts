@@ -271,24 +271,22 @@ export const useTransactionsPage = (): UseTransactionsPageResult => {
     };
   }, [calendarTransactions]);
 
-  // Group transactions by day for calendar (use calendarTransactions), keyed by full date
+  // Group transactions by day for calendar; key by local date YYYY-MM-DD (matches calendar cells)
+  // Include transaction if its local date is within period startDate..endDate (inclusive of full end day)
   const dailyTransactions = useMemo(() => {
     const dailyMap: Record<string, DailyTransaction> = {};
-
-    const startTime = monthPeriodRange.start.getTime();
-    const endTime = monthPeriodRange.end.getTime();
+    const startStr = monthPeriod.startDate;
+    const endStr = monthPeriod.endDate;
 
     calendarTransactions.forEach((tx) => {
       const date = new Date(tx.createdAt);
-      const time = date.getTime();
-
-      // Only include transactions within the current financial month period
-      if (time < startTime || time > endTime) return;
-
-      const day = date.getUTCDate();
-      const month = date.getUTCMonth() + 1; // 1-12
-      const year = date.getUTCFullYear();
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
       const key = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+      // Only include if transaction's local date is within the period (inclusive of end date)
+      if (key < startStr || key > endStr) return;
 
       if (!dailyMap[key]) {
         dailyMap[key] = { date: key, income: 0, expense: 0 };
@@ -301,7 +299,7 @@ export const useTransactionsPage = (): UseTransactionsPageResult => {
     });
 
     return dailyMap;
-  }, [calendarTransactions, monthPeriodRange]);
+  }, [calendarTransactions, monthPeriod.startDate, monthPeriod.endDate]);
 
   // Apply type filter only (category filter is done by API via categoryIds[])
   const filteredListTransactions = useMemo(() => {

@@ -25,11 +25,23 @@ export const useSettings = () => {
 
   const handleBalanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const digitsOnly = value.replace(/\D/g, "");
+    const previous = balanceInput;
+
+    const prevDigits = previous.replace(/\D/g, "");
+    let digitsOnly = value.replace(/\D/g, "");
+
+    // If user pressed backspace on the trailing "đ", value will temporarily lose "đ".
+    // In that case, delete the last digit instead so "đ" stays and numbers decrease.
+    const removedCurrencySuffix = previous.endsWith("đ") && !value.endsWith("đ");
+    if (removedCurrencySuffix && prevDigits.length > 0 && digitsOnly === prevDigits) {
+      digitsOnly = prevDigits.slice(0, -1);
+    }
+
     if (digitsOnly === "") {
       setBalanceInput("");
       return;
     }
+
     const formatted = formatAmountInput(digitsOnly);
     setBalanceInput(formatted);
   };

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import "./globals.css";
 import { AuthProvider, useAuthContext } from "./context/AuthContext";
 import { FooterProvider, useFooter } from "./context/FooterContext";
@@ -12,8 +13,18 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathName = usePathname();
   const router = useRouter();
   const { isFooterVisible } = useFooter();
-  const { isAuthenticated } = useAuthContext();
-  const showChat = isAuthenticated && pathName !== "/signin" && pathName !== "/signup" && pathName !== "/settings";
+  const { isAuthenticated, isTokenValid, isLoading } = useAuthContext();
+  const showChat = isAuthenticated && pathName !== "/signin" && pathName !== "/signup" && pathName !== "/settings" && pathName !== "/chat";
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    const isAuthRoute = pathName === "/signin" || pathName === "/signup" || pathName === "/offline";
+
+    if (!isAuthRoute && (!isAuthenticated || !isTokenValid)) {
+      router.replace("/signin");
+    }
+  }, [isAuthenticated, isTokenValid, isLoading, pathName, router]);
 
   return (
     <>

@@ -31,8 +31,11 @@ export default function CreateBudget({ category, setCategory }: CreateBudgetProp
   }, [setFooterVisible]);
   return (
     <section aria-label="Tạo ngân sách" className="relative flex min-h-screen flex-col bg-[#F8FAFC]">
-      {/* Top Bar */}
-      <div className="relative h-[95px] w-full overflow-hidden rounded-b-[20px] bg-[#0046B0]">
+      {/* Top Bar - extends into top safe area on PWA and browser */}
+      <div
+        className="relative w-full overflow-hidden bg-[#0046B0] h-[55px]"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+      >
         {/* Pattern background */}
         <div className="absolute h-full w-full mix-blend-soft-light">
           <Image src={imagePath("/images/header.png")} alt="" fill className="object-cover" />

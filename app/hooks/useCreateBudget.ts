@@ -7,9 +7,11 @@ import { formatAmountInput, parseAmountInput } from "app/utilities/common/functi
 import { budgetApi } from "app/services/budgetApi";
 import { extractErrorMessage } from "app/lib/apiClient";
 import type { UseCreateBudgetProps, UseCreateBudgetResult } from "app/types/budgets";
+import { useAuthContext } from "app/context/AuthContext";
 
 export const useCreateBudget = ({ category, setCategory }: UseCreateBudgetProps): UseCreateBudgetResult => {
   const router = useRouter();
+  const { user } = useAuthContext();
 
   const [amountValue, setAmountValue] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,11 +44,21 @@ export const useCreateBudget = ({ category, setCategory }: UseCreateBudgetProps)
         return;
       }
 
-      // Get current month in YYYY-MM format
+      // Determine \"financial\" month in YYYY-MM based on user's startDayMonth (like budgets list).
+      // Example: if startDayMonth = 10 and today is 9/03, period is 10/02–09/03 → monthString = 2026-02.
       const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const monthString = `${year}-${month}`;
+      const startDay = user?.startDayMonth ?? 1;
+      let periodYear = now.getFullYear();
+      let periodMonth = now.getMonth(); // 0-11
+      if (now.getDate() < startDay) {
+        periodMonth -= 1;
+        if (periodMonth < 0) {
+          periodMonth = 11;
+          periodYear -= 1;
+        }
+      }
+      const monthNumber = periodMonth + 1;
+      const monthString = `${periodYear}-${String(monthNumber).padStart(2, "0")}`;
 
       setIsSubmitting(true);
       setSubmitError(null);
@@ -73,7 +85,7 @@ export const useCreateBudget = ({ category, setCategory }: UseCreateBudgetProps)
         setIsSubmitting(false);
       }
     },
-    [category, amountValue, router],
+    [category, amountValue, router, user?.startDayMonth],
   );
 
   const isFormValid = Boolean(category && category.id && amountValue.trim().length > 0);
